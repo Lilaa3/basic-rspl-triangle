@@ -1,0 +1,37 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Debug via Docker",
+      "type": "cppdbg",
+      "request": "launch",
+      "program": "/workspace/build/hello.elf",
+      "stopAtEntry": true,
+      "MIMode": "gdb",
+      "cwd": "/workspace", 
+      "pipeTransport": {
+        "pipeCwd": "${workspaceFolder}",
+        "pipeProgram": "docker",
+        "pipeArgs": [
+            "compose",
+            "run",
+            "--rm",
+            "gdb-multiarch",
+            "gdb-multiarch",
+            "--interpreter=mi"
+        ],
+        "debuggerPath": "gdb-multiarch"
+      },
+      "sourceFileMap": {
+        "/workspace/src": "${workspaceFolder}/src",
+        "/workspace/libdragon": "${workspaceFolder}/../libdragon"
+      },
+      "setupCommands": [
+        { "description": "Enable pretty-printing", "text": "-enable-pretty-printing" },
+        { "description": "Load program symbols",   "text": "file /workspace/build/hello.elf" },
+        { "description": "Set safe auto-load path","text": "set auto-load safe-path /workspace" },
+        { "description": "Connect to GDB server",  "text": "target remote 127.0.0.1:9123" }
+      ],
+    }
+  ]
+} 

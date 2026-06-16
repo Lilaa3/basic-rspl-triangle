@@ -1,0 +1,10 @@
+services:
+  gdb-multiarch:
+    build:
+      context: .
+      dockerfile: gdb-multiarch.Dockerfile
+    working_dir: /workspace
+    volumes:
+      - .:/workspace
+    entrypoint: ["gdb-multiarch"]
+    network_mode: "host"
