@@ -77,8 +77,7 @@ int main() {
                rsp_example_id,
                Cmd_DrawTriangle,
                tri_cmd,
-               PhysicalAddr(
-                   &triangle_vertices[0])); // Hardcoded triangle, nothing fancy
+               PhysicalAddr(&triangle_vertices[0]));
     auto block = rspq_block_end();
 
     for (;;) {
