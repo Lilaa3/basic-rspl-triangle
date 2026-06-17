@@ -1,0 +1,38 @@
+include "rsp_queue.inc"
+include "rdpq_macros.h"
+include "rsp_rdpq_tri.inc"
+
+state {
+  vec16 vtx0[2];
+  vec16 vtx1[2];
+  vec16 vtx2[2];
+}
+
+function RDPQ_Triangle_Send_Async(u16<$a0> cmdWord, u16<$a1> ptrVert0, u16<$a2> ptrVert1, u16<$a3> ptrVert2, u8<$v0> cullFlag);
+function RDPQ_Triangle_Send_End();
+
+command<0> Cmd_DrawTriangle(u32<$a0> verticePtr)
+{
+  dma_in(vtx0, verticePtr, 96);
+  undef verticePtr;
+  // TRIFMT_SHADE
+  u16<$a0> triCmd = 0x0C00;
+
+  u16<$a1> v0 = vtx0;
+  u16<$a2> v1 = vtx1;
+  u16<$a3> v2 = vtx2;
+
+  // 2 disables all backface or frontface culling
+  RDPQ_Triangle_Send_Async(triCmd, v0, v1, v2, 2);
+
+  RDPQ_Triangle_Send_End();
+  goto Exit;
+
+  RDPQ_Triangle_Cull:
+  asm("nop"); // rspl removes the label if there isn't an extra noop here
+  RDPQ_Triangle_Clip:
+  asm("nop");
+  Exit:
+  // if the triangle was culled or clipped, skip RDPQ_Triangle_Send_End
+  asm("nop");
+}
