@@ -77,7 +77,7 @@
 
 .data
   RSPQ_BeginOverlayHeader
-    RSPQ_DefineCommand Cmd_DrawTriangle, 4
+    RSPQ_DefineCommand Cmd_DrawTriangle, 8
   RSPQ_EndOverlayHeader
 
   RSPQ_BeginSavedState
@@ -95,29 +95,28 @@
 OVERLAY_CODE_START:
 
 Cmd_DrawTriangle:
-  ori $t0, $zero, 95                                 ## L:16   |      ^ | dma_in(vtx0, verticePtr, 96);
-  or $s0, $zero, $a0                                 ## L:16   |      2 | dma_in(vtx0, verticePtr, 96);
+  or $s0, $zero, $a1                                 ## L:16   |      ^ | dma_in(vtx0, verticePtr, 96);
+  ori $t0, $zero, 95                                 ## L:16   |      2 | dma_in(vtx0, verticePtr, 96);
   addiu $t2, $zero, 12                               ## L:16   |      3 | dma_in(vtx0, verticePtr, 96);
   jal DMAExec                                        ## L:16   |      4 | dma_in(vtx0, verticePtr, 96); ## Args: $t0, $t1, $s0, $s4, $t2
   ori $s4, $zero, %lo(vtx0)                          ## L:16   |     *6 | dma_in(vtx0, verticePtr, 96);
-  ori $a1, $zero, %lo(vtx0)                          ## L:21   |      7 | u16<$a1> v0 = vtx0;
-  addiu $v0, $zero, 2                                ## L:26   |      8 | RDPQ_Triangle_Send_Async(triCmd, v0, v1, v2, 2);
-  addiu $a0, $zero, 3072                             ## L:19   |      9 | u16<$a0> triCmd = 0x0C00;
-  ori $a3, $zero, %lo(vtx2)                          ## L:23   |     10 | u16<$a3> v2 = vtx2;
-  jal RDPQ_Triangle_Send_Async                       ## L:26   |     11 | RDPQ_Triangle_Send_Async(triCmd, v0, v1, v2, 2); ## Args: $a0, $a1, $a2, $a3, $v0
-  ori $a2, $zero, %lo(vtx1)                          ## L:22   |    *13 | u16<$a2> v1 = vtx1;
-  jal RDPQ_Triangle_Send_End                         ## L:28   |     14 | RDPQ_Triangle_Send_End();
-  nop                                                ## L:28   |    *16 | RDPQ_Triangle_Send_End();
-  j Exit                                             ## L:29   |     17 | goto Exit;
-  nop                                                ## L:29   |    *19 | goto Exit;
+  ori $a2, $zero, %lo(vtx1)                          ## L:20   |      7 | u16<$a2> v1 = vtx1;
+  addiu $v0, $zero, 2                                ## L:24   |      8 | RDPQ_Triangle_Send_Async(triCmd, v0, v1, v2, 2);
+  ori $a3, $zero, %lo(vtx2)                          ## L:21   |      9 | u16<$a3> v2 = vtx2;
+  jal RDPQ_Triangle_Send_Async                       ## L:24   |     10 | RDPQ_Triangle_Send_Async(triCmd, v0, v1, v2, 2); ## Args: $a0, $a1, $a2, $a3, $v0
+  ori $a1, $zero, %lo(vtx0)                          ## L:19   |    *12 | u16<$a1> v0 = vtx0;
+  jal RDPQ_Triangle_Send_End                         ## L:26   |     13 | RDPQ_Triangle_Send_End();
+  nop                                                ## L:26   |    *15 | RDPQ_Triangle_Send_End();
+  j Exit                                             ## L:27   |     16 | goto Exit;
+  nop                                                ## L:27   |    *18 | goto Exit;
   RDPQ_Triangle_Cull:
-  nop # inline-ASM                                   ## L:32   |      0 | asm("nop");
+  nop # inline-ASM                                   ## L:30   |      0 | asm("nop");
   RDPQ_Triangle_Clip:
-  nop # inline-ASM                                   ## L:34   |      0 | asm("nop");
+  nop # inline-ASM                                   ## L:32   |      0 | asm("nop");
   Exit:
-  nop # inline-ASM                                   ## L:37   |      0 | asm("nop");
-  j RSPQ_Loop                                        ## L:38   |     20 | }
-  nop                                                ## L:38   |    *22 | }
+  nop # inline-ASM                                   ## L:35   |      0 | asm("nop");
+  j RSPQ_Loop                                        ## L:36   |     19 | }
+  nop                                                ## L:36   |    *21 | }
 
 OVERLAY_CODE_END:
 

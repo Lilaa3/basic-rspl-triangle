@@ -11,12 +11,10 @@ state {
 function RDPQ_Triangle_Send_Async(u16<$a0> cmdWord, u16<$a1> ptrVert0, u16<$a2> ptrVert1, u16<$a3> ptrVert2, u8<$v0> cullFlag);
 function RDPQ_Triangle_Send_End();
 
-command<0> Cmd_DrawTriangle(u32<$a0> verticePtr)
+command<0> Cmd_DrawTriangle(u16<$a0> triCmd, u32<$a1> verticePtr)
 {
   dma_in(vtx0, verticePtr, 96);
   undef verticePtr;
-  // TRIFMT_SHADE
-  u16<$a0> triCmd = 0x0C00;
 
   u16<$a1> v0 = vtx0;
   u16<$a2> v1 = vtx1;

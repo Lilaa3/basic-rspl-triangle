@@ -3,6 +3,7 @@ SOURCE_DIR=src
 BUILD_DIR=build
 include $(N64_INST)/include/n64.mk
 
+CFLAGS+=-Wall -Wextra -pedantic
 ifeq ($(D),1)
 CFLAGS+=-g
 CXXFLAGS+=-g
