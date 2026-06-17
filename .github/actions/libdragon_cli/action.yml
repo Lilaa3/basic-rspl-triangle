@@ -1,0 +1,17 @@
+name: 'Setup Libdragon CLI'
+description: 'Installs libdragon CLI and toolchain'
+
+runs:
+  using: 'composite'
+  steps:
+    - uses: actions/setup-node@v6.4.0
+      with:
+        node-version: 24
+
+    - name: Install libdragon CLI
+      run: npm install -g libdragon
+      shell: bash
+
+    - name: Start libdragon container
+      run: libdragon start
+      shell: bash

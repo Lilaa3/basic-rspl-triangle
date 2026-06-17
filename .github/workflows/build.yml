@@ -1,0 +1,31 @@
+name: Build ROM
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: 'recursive'
+
+      - name: Setup Libdragon Toolchain
+        uses: ./.github/actions/libdragon_cli
+
+      - name: Compile and Install Libdragon
+        run: libdragon install
+
+      - name: Build ROM
+        run: libdragon make
+
+      - name: Upload ROM Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: n64-rom
+          path: |
+            build/basic_rspl_triangle.z64

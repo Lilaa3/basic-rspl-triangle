@@ -12,17 +12,20 @@ RSPASFLAGS+=-g
 LDFLAGS+=-g
 endif
 
-all: hello.z64
+all: basic_rspl_triangle.z64
+	@mkdir -p $(BUILD_DIR)
+	mv basic_rspl_triangle.z64 $(BUILD_DIR)/basic_rspl_triangle.z64
 .PHONY: all
 
 OBJS = $(BUILD_DIR)/main.o $(BUILD_DIR)/rsp/rsp_example.o
 
-hello.z64: N64_ROM_TITLE="Hello World"
+basic_rspl_triangle.z64: N64_ROM_TITLE="Basic RSPL Triangle"
 
-$(BUILD_DIR)/hello.elf: $(OBJS)
+$(BUILD_DIR)/basic_rspl_triangle.elf: $(OBJS)
 
+# Clean targets inside both root and build folders
 clean:
-	rm -f $(BUILD_DIR)/* *.z64
+	rm -rf $(BUILD_DIR) *.z64
 .PHONY: clean
 
 -include $(wildcard $(BUILD_DIR)/*.d)
