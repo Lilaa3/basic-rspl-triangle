@@ -1,5 +1,7 @@
 # Basic RSPL Triangle Microcode
 
+![Screenshot](image.png)
+
 A minimal example/reference of [rspl](https://github.com/HailToDodongo/rspl) + [rdpq_triangle](https://libdragon.dev/ref/group__rdpq.html) + [rspq](https://libdragon.dev/ref/rspq_8h.html) working together for a basic triangle scene.
 
 It's also a decent example for rspl and rdpq.
